@@ -42,10 +42,16 @@ module Roodi
       end
 
       def output_result(errors, files_checked)
-        errors.each {|error| puts "\e[31m#{error}\e[0m"}
+        unique_results=[]
+        errors.each do |error|
+          if !unique_results.include?(error.to_s)
+            unique_results << error.to_s
+            puts "\e[31m#{error}\e[0m"
+          end
+        end
 
         puts "\nChecked #{files_checked} files"
-        result = "Found #{errors.size} errors."
+        result = "Found #{unique_results.size} errors."
         if errors.empty?
           puts "\e[32m#{result}\e[0m"
         else
